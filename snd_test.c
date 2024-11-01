@@ -14,20 +14,36 @@ int		line_completed(char *buffer)
 
 char	*gnl_proto(int fd)
 {
-	static t_buffer	*list;
+	static t_static	*tracking;
+	t_buffer		*list;
 	t_buffer		*link;
-	int				iterations;
+	int				iter_index;
 	int				line_index;
 	int				buffer_index;
 	size_t			read_bytes;
 	char			*line;
 
-	if (!list)
+	if (!tracking)
 	{
-		list = (t_buffer *) malloc(sizeof(t_buffer));
-		if (!list)
+		tracking = (t_static *) malloc(sizeof(t_static));
+		if (!tracking)
 			return (NULL);
+		tracking -> buffer = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
+		if (!(tracking -> buffer))
+			return (NULL);
+		tracking -> iterations = 0;
 	}
+	iter_index = 0;
+	if (tracking -> buffer)
+	{
+		while (iter_index < iterations)
+		{
+
+		}
+	}
+	list = (t_buffer *) malloc(sizeof(t_buffer));
+	if (!list)
+		return (NULL);
 	link = list;
 	link -> next = NULL;
 	link -> buffer = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
@@ -66,6 +82,14 @@ char	*gnl_proto(int fd)
 	while (link -> buffer[buffer_index] != '\n' && link -> buffer[buffer_index] != EOF)
 		line[line_index++] = link -> buffer[buffer_index++];
 	line[line_index] = 0;
+	while (list)
+	{
+		link = list;
+		free(list -> buffer);
+		list = list -> next;
+		free(link);
+	}
+	tracking -> iterations++;
 	return (line);
 }
 

@@ -6,7 +6,7 @@
 /*   By: imeulema <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:18:10 by imeulema          #+#    #+#             */
-/*   Updated: 2024/11/01 14:03:29 by imeulema         ###   ########.fr       */
+/*   Updated: 2024/11/01 14:51:58 by imeulema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,16 @@
 
 char	*get_next_line(int fd);
 
-typedef struct s_buffer
+typedef struct	s_buffer
 {
 	char			*buffer;
 	struct s_buffer	*next;
 }	t_buffer;
+
+typedef struct	s_static
+{
+	char	*buffer;
+	int		iterations;
+}	t_static;
 
 #endif

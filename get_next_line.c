@@ -6,7 +6,7 @@
 /*   By: imeulema <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:16:44 by imeulema          #+#    #+#             */
-/*   Updated: 2024/11/02 15:08:17 by imeulema         ###   ########.fr       */
+/*   Updated: 2024/11/02 15:25:56 by imeulema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,18 +112,20 @@ char			*get_next_line(int fd)
 		if (read_bytes == -1)
 			return (NULL);
 		else if (read_bytes == 0)
+		{
+			free(buffer);
 			break;
+		}
 		buffer[read_bytes] = 0;
 		line = concat(line, buffer);
 		if (!line)
 			return (NULL);
 	}
-	buffer = trim(buffer);
+	if (read_bytes > 0)
+		buffer = trim(buffer);
 	return (line);
 }
-
-#include <stdio.h>
-
+/*
 int main()
 {
 	int		fd;
@@ -145,3 +147,4 @@ int main()
 	close(fd);
 	return 0;
 }
+*/

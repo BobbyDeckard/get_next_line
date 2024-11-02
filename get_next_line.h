@@ -6,7 +6,7 @@
 /*   By: imeulema <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:18:10 by imeulema          #+#    #+#             */
-/*   Updated: 2024/11/01 14:51:58 by imeulema         ###   ########.fr       */
+/*   Updated: 2024/11/02 14:24:54 by imeulema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <stdio.h>
 
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 1

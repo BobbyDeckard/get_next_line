@@ -41,7 +41,7 @@ char			*concat(char *line, char *buffer)
 			i++;
 		}
 	}
-	while (*buffer && *buffer != '\n' && *buffer != EOF)
+	while (*buffer && *buffer != '\n')
 		new[i++] = *(buffer++);
 	if (*buffer == '\n')
 		new[i++] = '\n';
@@ -50,7 +50,6 @@ char			*concat(char *line, char *buffer)
 	return (new);
 }
 
-// need a mean to verify if EOF has been reached, it won't be added to the line string
 int				line_complete(char *str)
 {
 	if (!str)
@@ -64,7 +63,6 @@ int				line_complete(char *str)
 	return (0);
 }
 
-// potentially to be modified if buffer has to be freed
 char			*trim(char *str)
 {
 	char	*copy;
@@ -76,7 +74,7 @@ char			*trim(char *str)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (str[i] && str[i] != '\n' && str[i] != EOF)
+	while (str[i] && str[i] != '\n')
 		i++;
 	if (str[i] == '\n')
 		i++;

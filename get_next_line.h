@@ -28,10 +28,4 @@ typedef struct	s_buffer
 	struct s_buffer	*next;
 }	t_buffer;
 
-typedef struct	s_static
-{
-	char	*buffer;
-	int		iterations;
-}	t_static;
-
 #endif

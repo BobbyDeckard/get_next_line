@@ -152,7 +152,7 @@ char			*get_next_line(int fd)
 		buffer = trim(buffer);
 	return (line);
 }
-/*
+
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -177,4 +177,4 @@ int main()
 	close(fd);
 	return 0;
 }
-*/
+

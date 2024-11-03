@@ -31,7 +31,11 @@ char			*concat(char *line, char *buffer)
 
 	new = (char *) malloc((gnl_strlen(line) + BUFFER_SIZE + 1) * sizeof(char));
 	if (!new)
+	{
+		free(line);
+		line = NULL;
 		return (NULL);
+	}
 	i = 0;
 	if (line)
 	{
@@ -63,7 +67,7 @@ int				line_complete(char *str)
 	return (0);
 }
 
-char			*trim(char *str)
+char			*trim(char *buffer)
 {
 	char	*copy;
 	int		i;
@@ -71,17 +75,28 @@ char			*trim(char *str)
 
 	copy = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!copy)
+	{
+		free(buffer);
+		buffer = NULL;
 		return (NULL);
+	}
 	i = 0;
 	j = 0;
-	while (str[i] && str[i] != '\n')
+	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	if (str[i] == '\n')
+	if (buffer[i] == '\n')
 		i++;
-	while (str[i])
-		copy[j++] = str[i++];
-	copy[j] = 0;
-	free(str);
+	while (buffer[i])
+		copy[j++] = buffer[i++];
+	if (j == 0)
+	{
+		free(copy);
+		copy = NULL;
+	}
+	else
+		copy[j] = 0;
+	free(buffer);
+	buffer = NULL;
 	return (copy);
 }
 
@@ -102,34 +117,51 @@ char			*get_next_line(int fd)
 	{
 		line = concat(line, buffer);
 		if (!line)
+		{
+			free(buffer);
+			buffer = NULL;
 			return (NULL);
+		}
 	}
 	while (!line_complete(line))
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes == -1)
+		{
+			free(buffer);
+			buffer = NULL;
 			return (NULL);
+		}
 		else if (read_bytes == 0)
 		{
 			free(buffer);
+			buffer = NULL;
 			break;
 		}
-		buffer[read_bytes] = 0;
+		else
+			buffer[read_bytes] = 0;
 		line = concat(line, buffer);
 		if (!line)
+		{
+			free(buffer);
+			buffer = NULL;
 			return (NULL);
+		}
 	}
 	if (read_bytes > 0)
 		buffer = trim(buffer);
 	return (line);
 }
 /*
+#include <stdio.h>
+#include <fcntl.h>
+
 int main()
 {
 	int		fd;
 	char	*line;
 
-	fd = open("file.txt", O_RDONLY);
+	fd = open("read_error.txt", O_RDONLY);
 	line = get_next_line(fd);
 	printf("%s", line);
 	free(line);

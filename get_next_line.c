@@ -12,6 +12,13 @@
 
 #include "get_next_line.h"
 
+char		*free_null(char *str)
+{
+	free(str);
+	str = NULL;
+	return (NULL);
+}
+
 unsigned int	gnl_strlen(char *str)
 {
 	int	i;
@@ -51,6 +58,7 @@ char			*concat(char *line, char *buffer)
 		new[i++] = '\n';
 	new[i] = 0;
 	free(line);
+	line = NULL;
 	return (new);
 }
 
@@ -117,42 +125,32 @@ char			*get_next_line(int fd)
 	{
 		line = concat(line, buffer);
 		if (!line)
-		{
-			free(buffer);
-			buffer = NULL;
-			return (NULL);
-		}
+			return(free_null(buffer));
 	}
 	while (!line_complete(line))
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes == -1)
 		{
-			free(buffer);
-			buffer = NULL;
-			return (NULL);
+			buffer = free_null(buffer);
+			return(free_null(line));
 		}
 		else if (read_bytes == 0)
 		{
-			free(buffer);
-			buffer = NULL;
+			buffer = free_null(buffer);
 			break;
 		}
 		else
 			buffer[read_bytes] = 0;
 		line = concat(line, buffer);
 		if (!line)
-		{
-			free(buffer);
-			buffer = NULL;
-			return (NULL);
-		}
+			return(free_null(buffer));
 	}
 	if (read_bytes > 0)
 		buffer = trim(buffer);
 	return (line);
 }
-
+/*
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -177,4 +175,4 @@ int main()
 	close(fd);
 	return 0;
 }
-
+*/

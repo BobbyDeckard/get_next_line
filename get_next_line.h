@@ -21,10 +21,4 @@
 
 char	*get_next_line(int fd);
 
-typedef struct	s_buffer
-{
-	char			*buffer;
-	struct s_buffer	*next;
-}	t_buffer;
-
 #endif

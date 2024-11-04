@@ -38,11 +38,7 @@ char			*concat(char *line, char *buffer)
 
 	new = (char *) malloc((gnl_strlen(line) + BUFFER_SIZE + 1) * sizeof(char));
 	if (!new)
-	{
-		free(line);
-		line = NULL;
-		return (NULL);
-	}
+		return(free_null(line));
 	i = 0;
 	if (line)
 	{
@@ -57,8 +53,7 @@ char			*concat(char *line, char *buffer)
 	if (*buffer == '\n')
 		new[i++] = '\n';
 	new[i] = 0;
-	free(line);
-	line = NULL;
+	line = free_null(line);
 	return (new);
 }
 
@@ -83,11 +78,7 @@ char			*trim(char *buffer)
 
 	copy = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!copy)
-	{
-		free(buffer);
-		buffer = NULL;
-		return (NULL);
-	}
+		return(free_null(buffer));
 	i = 0;
 	j = 0;
 	while (buffer[i] && buffer[i] != '\n')
@@ -97,14 +88,10 @@ char			*trim(char *buffer)
 	while (buffer[i])
 		copy[j++] = buffer[i++];
 	if (j == 0)
-	{
-		free(copy);
-		copy = NULL;
-	}
+		copy = free_null(copy);
 	else
 		copy[j] = 0;
-	free(buffer);
-	buffer = NULL;
+	buffer = free_null(buffer);
 	return (copy);
 }
 

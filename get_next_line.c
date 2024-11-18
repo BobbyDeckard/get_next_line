@@ -15,7 +15,6 @@
 char		*free_null(char *str)
 {
 	free(str);
-	str = NULL;
 	return (NULL);
 }
 
@@ -40,20 +39,17 @@ char			*concat(char *line, char *buffer)
 	if (!new)
 		return(free_null(line));
 	i = 0;
-	if (line)
+	while (line && line[i])
 	{
-		while (line[i])
-		{
-			new[i] = line[i];
-			i++;
-		}
+		new[i] = line[i];
+		i++;
 	}
 	while (*buffer && *buffer != '\n')
 		new[i++] = *(buffer++);
 	if (*buffer == '\n')
 		new[i++] = '\n';
 	new[i] = 0;
-	line = free_null(line);
+	free(line);
 	return (new);
 }
 
@@ -95,6 +91,30 @@ char			*trim(char *buffer)
 	return (copy);
 }
 
+char *get_line(char **line, int *read_bytes, int fd, char **buffer)
+{
+	while (!line_complete(*line))
+	{
+		*read_bytes = read(fd, *buffer, BUFFER_SIZE);
+		if (*read_bytes == -1)
+		{
+			*buffer = free_null(*buffer);
+			return(free_null(*line));
+		}
+		else if (*read_bytes == 0)
+		{
+			*buffer = free_null(*buffer);
+			break;
+		}
+		else
+			(*buffer)[*read_bytes] = 0;
+		*line = concat(*line, *buffer);
+		if (!*line)
+			return(free_null(*buffer));
+	}
+	return(*line);
+}
+
 char			*get_next_line(int fd)
 {
 	static char	*buffer;
@@ -114,25 +134,7 @@ char			*get_next_line(int fd)
 		if (!line)
 			return(free_null(buffer));
 	}
-	while (!line_complete(line))
-	{
-		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes == -1)
-		{
-			buffer = free_null(buffer);
-			return(free_null(line));
-		}
-		else if (read_bytes == 0)
-		{
-			buffer = free_null(buffer);
-			break;
-		}
-		else
-			buffer[read_bytes] = 0;
-		line = concat(line, buffer);
-		if (!line)
-			return(free_null(buffer));
-	}
+	line = get_line(&line, &read_bytes, fd, &buffer);
 	if (read_bytes > 0)
 		buffer = trim(buffer);
 	return (line);

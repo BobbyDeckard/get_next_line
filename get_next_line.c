@@ -12,24 +12,6 @@
 
 #include "get_next_line.h"
 
-char		*free_null(char *str)
-{
-	free(str);
-	return (NULL);
-}
-
-unsigned int	gnl_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-		i++;
-	return (i);
-}
-
 char			*concat(char *line, char *buffer)
 {
 	char	*new;
@@ -51,19 +33,6 @@ char			*concat(char *line, char *buffer)
 	new[i] = 0;
 	free(line);
 	return (new);
-}
-
-int				line_complete(char *str)
-{
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		if (*str == '\n')
-			return (1);
-		str++;
-	}
-	return (0);
 }
 
 char			*trim(char *buffer)

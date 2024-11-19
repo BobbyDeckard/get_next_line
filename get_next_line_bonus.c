@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char			*concat(char *line, char *buffer)
 {
@@ -77,37 +77,37 @@ char *get_line(char **line, int *read_bytes, int fd, char **buffer)
 		}
 		else
 			(*buffer)[*read_bytes] = 0;
-		*line = concat(*line, *buffer);
+		*line = concat(*line, (*buffer));
 		if (!*line)
-			return(free_null(*buffer));
+			return(free_null((*buffer)));
 	}
 	return(*line);
 }
 
 char			*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[4095];
 	char		*line;
 	int			read_bytes;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
 	line = NULL;
-	if (!buffer)
+	if (fd < 0 || fd > 4095 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (!buffer[fd])
 	{
-		buffer = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
-		if (!buffer)
+		buffer[fd] = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
+		if (!buffer[fd])
 			return (NULL);
 	}
 	else
 	{
-		line = concat(line, buffer);
+		line = concat(line, buffer[fd]);
 		if (!line)
-			return(free_null(buffer));
+			return(free_null(buffer[fd]));
 	}
-	line = get_line(&line, &read_bytes, fd, &buffer);
+	line = get_line(&line, &read_bytes, fd, &buffer[fd]);
 	if (read_bytes > 0)
-		buffer = trim(&buffer);
+		buffer[fd] = trim(&buffer[fd]);
 	return (line);
 }
 /*
@@ -116,23 +116,30 @@ char			*get_next_line(int fd)
 
 int main()
 {
-	int		fd;
+	int		fd1;
+	int		fd2;
 	char	*line;
 
-	fd = open("file.txt", O_RDONLY);
-	line = get_next_line(fd);
+	fd1 = open("file.txt", O_RDONLY);
+	fd2 = open("file2.txt", O_RDONLY);
+	line = get_next_line(fd1);
+	printf("%s", line);
+	line = get_next_line(fd2);
+	printf("%s", line);
+	line = get_next_line(fd1);
+	printf("%s", line);
+	line = get_next_line(fd2);
+	printf("%s", line);
+	line = get_next_line(fd1);
+	printf("%s", line);
+	line = get_next_line(fd2);
+	printf("%s", line);
+	line = get_next_line(fd1);
+	printf("%s", line);
+	line = get_next_line(fd2);
 	printf("%s", line);
 	free(line);
-	line = get_next_line(fd);
-	printf("%s", line);
-	free(line);
-	line = get_next_line(fd);
-	printf("%s", line);
-	free(line);
-	line = get_next_line(fd);
-	printf("%s", line);
-	free(line);
-	close(fd);
+	close(fd1);
 	return 0;
 }
 */

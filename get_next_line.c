@@ -60,7 +60,7 @@ char			*trim(char **buffer)
 	return (copy);
 }
 
-char *get_line(char **line, int *read_bytes, int fd, char **buffer)
+char *make_line(char **line, int *read_bytes, int fd, char **buffer)
 {
 	while (!line_complete(*line))
 	{
@@ -105,7 +105,7 @@ char			*get_next_line(int fd)
 		if (!line)
 			return(free_null(buffer));
 	}
-	line = get_line(&line, &read_bytes, fd, &buffer);
+	line = make_line(&line, &read_bytes, fd, &buffer);
 	if (read_bytes > 0)
 		buffer = trim(&buffer);
 	return (line);

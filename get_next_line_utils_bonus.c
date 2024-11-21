@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imeulema <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/29 14:19:09 by imeulema          #+#    #+#             */
-/*   Updated: 2024/11/21 11:43:42 by imeulema         ###   ########.fr       */
+/*   Created: 2024/11/21 11:56:55 by imeulema          #+#    #+#             */
+/*   Updated: 2024/11/21 11:59:58 by imeulema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char		*free_null(char *str)
+char	*free_null(char *str)
 {
 	free(str);
 	return (NULL);
@@ -30,7 +30,7 @@ unsigned int	gnl_strlen(char *str)
 	return (i);
 }
 
-int				line_complete(char *str)
+int	line_complete(char *str)
 {
 	if (!str)
 		return (0);

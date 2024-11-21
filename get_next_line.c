@@ -6,21 +6,20 @@
 /*   By: imeulema <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:16:44 by imeulema          #+#    #+#             */
-/*   Updated: 2024/11/21 11:41:23 by imeulema         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:01:23 by imeulema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-char			*concat(char *line, char *buffer)
+char	*concat(char *line, char *buffer)
 {
 	char	*new;
 	int		i;
 
 	new = (char *) malloc((gnl_strlen(line) + BUFFER_SIZE + 1) * sizeof(char));
 	if (!new)
-		return(free_null(line));
+		return (free_null(line));
 	i = 0;
 	while (line && line[i])
 	{
@@ -36,7 +35,7 @@ char			*concat(char *line, char *buffer)
 	return (new);
 }
 
-char			*trim(char **buffer)
+char	*trim(char **buffer)
 {
 	char	*copy;
 	int		i;
@@ -44,7 +43,7 @@ char			*trim(char **buffer)
 
 	copy = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!copy)
-		return(free_null(*buffer));
+		return (free_null(*buffer));
 	i = 0;
 	j = 0;
 	while ((*buffer)[i] && (*buffer)[i] != '\n')
@@ -61,33 +60,31 @@ char			*trim(char **buffer)
 	return (copy);
 }
 
-char *make_line(char **line, int *read_bytes, int fd, char **buffer)
+char	*make_line(char **line, int *read_bytes, int fd, char **buffer)
 {
 	while (!line_complete(*line))
 	{
 		*read_bytes = read(fd, *buffer, BUFFER_SIZE);
 		if (*read_bytes == -1)
 		{
-			//printf("Read error occurred\n");
 			*buffer = free_null(*buffer);
-			return(free_null(*line));
+			return (free_null(*line));
 		}
 		else if (*read_bytes == 0)
 		{
-			//printf("Finished reading file\n");
 			*buffer = free_null(*buffer);
-			break;
+			break ;
 		}
 		else
 			(*buffer)[*read_bytes] = 0;
 		*line = concat(*line, *buffer);
 		if (!*line)
-			return(free_null(*buffer));
+			return (free_null(*buffer));
 	}
-	return(*line);
+	return (*line);
 }
 
-char			*get_next_line(int fd)
+char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
@@ -104,10 +101,9 @@ char			*get_next_line(int fd)
 	}
 	else
 	{
-		//printf("Buffer at recall: %s\n", buffer);
 		line = concat(line, buffer);
 		if (!line)
-			return(free_null(buffer));
+			return (free_null(buffer));
 	}
 	line = make_line(&line, &read_bytes, fd, &buffer);
 	if (buffer)

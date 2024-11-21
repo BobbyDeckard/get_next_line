@@ -6,13 +6,13 @@
 /*   By: imeulema <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:19:09 by imeulema          #+#    #+#             */
-/*   Updated: 2024/11/21 11:43:29 by imeulema         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:00:15 by imeulema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char		*free_null(char *str)
+char	*free_null(char *str)
 {
 	free(str);
 	return (NULL);
@@ -30,7 +30,7 @@ unsigned int	gnl_strlen(char *str)
 	return (i);
 }
 
-int				line_complete(char *str)
+int	line_complete(char *str)
 {
 	if (!str)
 		return (0);

@@ -6,11 +6,12 @@
 /*   By: imeulema <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:16:44 by imeulema          #+#    #+#             */
-/*   Updated: 2024/11/02 15:25:56 by imeulema         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:41:23 by imeulema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 char			*concat(char *line, char *buffer)
 {
@@ -67,11 +68,13 @@ char *make_line(char **line, int *read_bytes, int fd, char **buffer)
 		*read_bytes = read(fd, *buffer, BUFFER_SIZE);
 		if (*read_bytes == -1)
 		{
+			//printf("Read error occurred\n");
 			*buffer = free_null(*buffer);
 			return(free_null(*line));
 		}
 		else if (*read_bytes == 0)
 		{
+			//printf("Finished reading file\n");
 			*buffer = free_null(*buffer);
 			break;
 		}
@@ -101,12 +104,13 @@ char			*get_next_line(int fd)
 	}
 	else
 	{
+		//printf("Buffer at recall: %s\n", buffer);
 		line = concat(line, buffer);
 		if (!line)
 			return(free_null(buffer));
 	}
 	line = make_line(&line, &read_bytes, fd, &buffer);
-	if (read_bytes > 0)
+	if (buffer)
 		buffer = trim(&buffer);
 	return (line);
 }
@@ -119,7 +123,7 @@ int main()
 	int		fd;
 	char	*line;
 
-	fd = open("file.txt", O_RDONLY);
+	fd = open("read_error.txt", O_RDONLY);
 	line = get_next_line(fd);
 	printf("%s", line);
 	free(line);

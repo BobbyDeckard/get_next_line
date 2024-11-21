@@ -6,7 +6,7 @@
 /*   By: imeulema <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:19:09 by imeulema          #+#    #+#             */
-/*   Updated: 2024/10/29 14:19:12 by imeulema         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:43:29 by imeulema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char		*free_null(char *str)
 
 unsigned int	gnl_strlen(char *str)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	if (!str)
